@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Advanced To-Do App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700&display=swap"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app">
+    <!-- HEADER -->
+    <header id="header">
+        <div id="header-left">
+            <h1>Task<span>Flow</span></h1>
+            <p>Advanced task manager — add, edit, update & delete.</p>
+        </div>
+        <div id="stats-row">
+            <div class="stat-pill" id="stat-total">Total <span class="num" id="cnt-total">0</span></div>
+            <div class="stat-pill" id="stat-done">Done <span class="num" id="cnt-done">0</span></div>
+            <div class="stat-pill" id="stat-pend">Pend <span class="num" id="cnt-pend">0</span></div>
+        </div>
+    </header>
+    <!-- PROGRESS -->
+    <div id="progress-wrap">
+        <div id="prog-row">
+            <span>Completion</span>
+            <span id="prog-pct">0%</span>
+        </div>
+        <div id="prog-track">
+            <div id="prog-fill"></div>
+        </div>
+    </div>
+    <!-- FORM -->
+    <section id="form-panel">
+        <div id="form-title">
+            <div id="form-mode-dot"></div>
+            <span id="form-title-text">Add New Task</span>
+        </div>
+        <input type="text" id="task-input" placeholder="Task title…" maxlength="120" autocomplete="off"/>
+        <textarea id="task-desc" placeholder="Description (optional)…" rows="2"></textarea>
+        <div id="form-row2">
+            <div class="field-group">
+                <label class="field-label" for="priority-select">Priority</label>
+                <select id="priority-select">
+                    <option value="high">🔴 High</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="category-select">Category</label>
+                <select id="category-select">
+                    <option value="">— None —</option>
+                    <option value="Work">💼 Work</option>
+                    <option value="Personal">🏠 Personal</option>
+                    <option value="Health">💪 Health</option>
+                    <option value="Finance">💰 Finance</option>
+                    <option value="Study">📚 Study</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="due-date-input">Due Date</label>
+                <input type="date" id="due-date-input"/>
+            </div>
+        </div>
+        <div id="form-btns">
+            <button class="btn" id="cancel-btn">✕ Cancel</button>
+            <button class="btn" id="save-btn">+ Add Task</button>
+        </div>
+    </section>
+    <!-- FILTER BAR -->
+    <div id="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+        <button class="filter-btn" data-filter="overdue">Overdue</button>
+        <select id="sort-select">
+            <option value="newest">↓ Newest</option>
+            <option value="oldest">↑ Oldest</option>
+            <option value="priority">⚑ Priority</option>
+            <option value="due">📅 Due Date</option>
+        </select>
+        <button id="clear-done-btn">Clear Done</button>
+    </div>
+    <!-- TASK LIST -->
+    <ul id="task-list"></ul>
+    <!-- EMPTY STATE -->
+    <div id="empty-state">
+        <div id="empty-icon">📋</div>
+        <h3 id="empty-title">No tasks found</h3>
+        <p id="empty-text">Add your first task above to get started.</p>
+    </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div id="modal-overlay">
+    <div id="modal-box">
+        <h3>Delete Task?</h3>
+        <p id="modal-msg">This action cannot be undone.</p>
+        <div id="modal-actions">
+            <button id="modal-cancel">Cancel</button>
+            <button id="modal-confirm">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" role="alert" aria-live="polite">
+    <span id="toast-msg"></span>
+</div>
+
+<script src="script.js"></script>
+</body>
+
+</html>
