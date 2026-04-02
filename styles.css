@@ -15,6 +15,7 @@
   --shadow-lg: 0 16px 48px rgba(26, 26, 46, 0.18);
   --radius: 16px;
   --radius-sm: 10px;
+  --radius-xs: 6px
 }
 
 *,
@@ -317,14 +318,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 #form-btns {
   display: flex;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .btn {
   font-family: "Clash Display", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 11px 24px;
+  padding: 15px 20px;
   border-radius: var(--radius-sm);
   border: none;
   cursor: pointer;
@@ -343,24 +344,45 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-color: var(--accent);
 }
 
-#save-btn {
+#add-task {
   background: var(--accent);
   color: #fff;
 }
 
-#save-btn:hover {
+#add-task:hover {
   background: #2d2d50;
   transform: translateY(-1px);
 }
 
-#save-btn:active {
+#add-task:active {
   transform: scale(0.97);
 }
 
-#form-panel.edit-mode #save-btn {
+#form-panel.edit-mode #add-task {
   background: var(--accent3);
 }
 
+/* Error Message */
+.error-btn {
+  font-family: "Clash Display", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 15px 20px;
+  border-radius: var(--radius-xs);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#error-message{
+  
+  background:rgb(156, 25, 25);
+  color: #fff;
+}
+#initial-message {
+  
+  background:rgb(25, 156, 42);
+  color: #fff;
+}
 /* ── FILTER BAR ── */
 #filter-bar {
   display: flex;
