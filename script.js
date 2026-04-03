@@ -12,6 +12,7 @@ const addTask = document.getElementById("add-task")
 const taskList = document.getElementById("task-list")
 const toast = document.getElementById("toast")
 const toastMsg = document.getElementById("toast-msg")
+const selectPriority = document.getElementById("priority-select")
 let objStorage = []
 
 // DATA IN OBJECTS
@@ -79,19 +80,20 @@ addTask.onclick = () => {
 
 
 function addTaskList(taskFlowData) {
+
     taskList.innerHTML = ''
     objStorage = [...objStorage, taskFlowData]
 
     objStorage.forEach((element, idx) => {
 
-        taskList.innerHTML += ` <li class="task-card">
+        taskList.innerHTML += ` <li key=${idx} class="task-card" data-priority="${element.priority}" >
                 <span class="task-check"></span>
                 <div class="task-body">
                     <p class="task-title">${element.title}</p>
                     <p class="task-desc-text">${element.description}</p>
                     <div class="task-meta">
-                        <span class="priority-badge">${element.priority}</span>
-                        <span class="task-due ">📅 ${element.dateDue}</span>
+                        <span class="priority-badge ${element.priority}"  >${element.priority}</span>
+                        <span class="task-due">📅 ${element.dateDue}</span>
                         <span class="task-cat">${element.category}</span>
                         <span class="task-created">${Date.now()}</span>
                     </div>
@@ -117,25 +119,20 @@ function addTaskList(taskFlowData) {
                 </div>
             </li>`
     })
+
+
     const taskCheck = document.querySelector(".task-check")
     taskCheck.addEventListener("click", () => {
 
-        if(!taskCheck.classList.contains("checked")){
-           taskCheck.classList.add("checked")
+        if (!taskCheck.classList.contains("checked")) {
+            taskCheck.classList.add("checked")
             return
-        } else{
+        } else {
             taskCheck.classList.remove("checked")
         }
 
-
-
     })
 }
-
-
-
-
-
 
 // TOAST NOTIFICATION 
 function showToast(message, type) {
