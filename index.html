@@ -71,7 +71,7 @@
             </div>
             <div id="form-btns">
                 <div id="insert-element">
-                    <button class="error-btn" id="initial-message">Perfectly Running</button>
+                    <button class="error-btn" id="offline">OFFLINE...</button>
                 </div>
                 <button class="btn" id="cancel-btn">✕ Cancel</button>
                 <button class="btn" id="add-task">+ Add Task</button>
@@ -115,7 +115,9 @@
 
     <!-- TOAST -->
     <div id="toast" role="alert" aria-live="polite">
-        <span id="toast-msg"></span>
+        <span id="toast-msg">
+            <span class="show"></span>
+        </span>
     </div>
 
     <script src="script.js"></script>

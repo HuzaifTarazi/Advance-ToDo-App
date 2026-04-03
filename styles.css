@@ -15,7 +15,7 @@
   --shadow-lg: 0 16px 48px rgba(26, 26, 46, 0.18);
   --radius: 16px;
   --radius-sm: 10px;
-  --radius-xs: 6px
+  --radius-xs: 6px;
 }
 
 *,
@@ -367,20 +367,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-family: "Clash Display", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 15px 20px;
+  padding: 12px 12px;
   border-radius: var(--radius-xs);
   border: none;
   cursor: pointer;
   transition: all 0.2s;
 }
-#error-message{
-  
-  background:rgb(156, 25, 25);
+#online {
+  background: rgba(25, 156, 47, 0.8);
   color: #fff;
 }
-#initial-message {
-  
-  background:rgb(25, 156, 42);
+#offline {
+  background: rgb(156, 25, 25, 0.8);
   color: #fff;
 }
 /* ── FILTER BAR ── */
@@ -792,20 +790,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   gap: 8px;
 }
-
 #toast.show {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
-
 #toast.success {
   background: var(--accent3);
 }
-
 #toast.error {
   background: var(--high);
 }
-
 #toast.warn {
   background: var(--med);
   color: var(--text);
