@@ -482,6 +482,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   bottom: 0;
   width: 4px;
   border-radius: 0 var(--radius) var(--radius) 0;
+  background: red;
 }
 
 .task-card[data-priority="high"]::after {
@@ -544,6 +545,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-left: none;
   transform: rotate(45deg) translateY(-1px);
   display: block;
+  margin-left: 3px;
+  margin-right: 5px;
 }
 
 /* Body */
