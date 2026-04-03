@@ -66,30 +66,29 @@ addTask.onclick = () => {
     // CLASS OBJECT CONVERSION
     const taskFlowData = new TaskFlow(taskInput, taskDesc, taskPriority, taskCategory, taskDueDate)
 
-    // DESTRUCTURING
-
+    // LOCAL-STORAGE
+    objStorage = [...objStorage, taskFlowData]
+    localStorage.setItem("User-Data", JSON.stringify(objStorage))
     // taskInputid.value = ''
     // taskDescid.value = ''
     // taskCategoryid.value = ''
     // taskDueDateid.value = ''
 
-
-    addTaskList(taskFlowData)
-
+    console.log(objStorage)
 }
 
 
-function addTaskList(taskFlowData) {
-
+function addTaskList() {
+    let getElement = localStorage.getItem("User-Data")
+    getElement = JSON.parse(getElement)
     taskList.innerHTML = ''
-    objStorage = [...objStorage, taskFlowData]
 
-    objStorage.forEach((element, idx) => {
+    getElement.forEach((element, idx) => {
 
         taskList.innerHTML += ` <li key=${idx} class="task-card" data-priority="${element.priority}" >
                 <span class="task-check"></span>
                 <div class="task-body">
-                    <p class="task-title">${element.title}</p>
+                    <p class="task-title">${element._title}</p>
                     <p class="task-desc-text">${element.description}</p>
                     <div class="task-meta">
                         <span class="priority-badge ${element.priority}"  >${element.priority}</span>
@@ -171,3 +170,4 @@ taskInputid.addEventListener("keyup", (e) => {
 })
 
 
+addTaskList()
