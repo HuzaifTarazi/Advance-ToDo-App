@@ -13,6 +13,9 @@ const taskList = document.getElementById("task-list")
 const toast = document.getElementById("toast")
 const toastMsg = document.getElementById("toast-msg")
 const selectPriority = document.getElementById("priority-select")
+const currentDate = new Date().getDate()
+const currentYear = new Date().getFullYear()
+const currentMonth = new Date().toLocaleString('default', { month: 'short' });
 let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
 console.log(objStorage)
 // DATA IN OBJECTS
@@ -80,8 +83,6 @@ addTask.onclick = () => {
 function addTaskList() {
     let getElement = localStorage.getItem("User-Data")
     getElement = JSON.parse(getElement)
-    const currentDate = new Date().getFullYear()
-    console.log(currentDate)
     taskList.innerHTML = ''
 
     getElement.forEach((element, idx) => {
@@ -95,7 +96,7 @@ function addTaskList() {
                         <span class="priority-badge ${element.priority}"  >${element.priority}</span>
                         <span class="task-due">📅 ${element.dateDue}</span>
                         <span class="task-cat">${element.category}</span>
-                        <span class="task-created">${Date.now()}</span>
+                        <span class="task-created">${`${currentDate}-${currentMonth}-${currentYear}`}</span>
                     </div>
                 </div>
                 <div class="task-actions">
