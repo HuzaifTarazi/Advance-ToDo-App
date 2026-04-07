@@ -15,9 +15,13 @@ const toastMsg = document.getElementById("toast-msg")
 const selectPriority = document.getElementById("priority-select")
 const currentDate = new Date().getDate()
 const currentYear = new Date().getFullYear()
-const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+const currentMonth = new Date().toLocaleString('default', { month: 'short' })
+const modalOverlay = document.getElementById("modal-overlay")
+const modalActions = document.getElementById("modal-actions")
+let selectedIndex = null
 let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
-console.log(objStorage)
+
+
 // DATA IN OBJECTS
 class TaskFlow {
     constructor(title, description, priority, category, dateDue) {
@@ -41,8 +45,6 @@ class TaskFlow {
         this._title = titleValue
     }
 }
-
-
 
 // PROGRAM RUN ON CLICK
 addTask.onclick = () => {
@@ -72,10 +74,10 @@ addTask.onclick = () => {
     // LOCAL-STORAGE
     objStorage = [...objStorage, taskFlowData]
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
-    taskInputid.value = ''
-    taskDescid.value = ''
-    taskCategoryid.value = ''
-    taskDueDateid.value = ''
+    // taskInputid.value = ''
+    // taskDescid.value = ''
+    // taskCategoryid.value = ''
+    // taskDueDateid.value = ''
     addTaskList()
 }
 
@@ -86,9 +88,8 @@ function addTaskList() {
     taskList.innerHTML = ''
 
     getElement.forEach((element, idx) => {
-
-        taskList.innerHTML += ` <li key=${idx} class="task-card" data-priority="${element.priority}" >
-                <span class="task-check"></span>
+        taskList.innerHTML += ` <li data-index=${idx} class="task-card" data-priority="${element.priority}" >
+                <span class="task-check" ></span>
                 <div class="task-body">
                     <p class="task-title">${element._title}</p>
                     <p class="task-desc-text">${element.description}</p>
@@ -100,7 +101,7 @@ function addTaskList() {
                     </div>
                 </div>
                 <div class="task-actions">
-                    <button class="icon-btn edit-btn">
+                    <button class="icon-btn edit-btn " >
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -120,19 +121,52 @@ function addTaskList() {
                 </div>
             </li>`
     })
-
-    const taskCheck = document.querySelector(".task-check")
-    taskCheck.addEventListener("click", () => {
-
-        if (!taskCheck.classList.contains("checked")) {
-            taskCheck.classList.add("checked")
-            return
-        } else {
-            taskCheck.classList.remove("checked")
-        }
-
-    })
 }
+
+// Check Box Element
+taskList.addEventListener("click", (e) => {
+    if (!e.target.classList.contains('checked')) {
+
+        e.target.classList.add("checked")
+
+    } else {
+        e.target.classList.remove("checked")
+    }
+
+    if (e.target.closest('.del-btn')) {
+        let listItems = e.target.closest('li')
+        console.log(listItems)
+        selectedIndex = listItems.dataset.index
+        console.log(selectedIndex)
+        modalOverlay.classList.add('open')
+    }
+
+})
+
+modalActions.addEventListener('click', (e) => {
+
+    if (e.target.id === "modal-cancel") {
+        modalOverlay.classList.remove("open")
+        selectedIndex = null
+        console.log(selectedIndex)
+        return
+    }
+
+    if (e.target.id === "modal-confirm") {
+        objStorage.splice(selectedIndex, 1)
+
+        localStorage.setItem("User-Data", JSON.stringify(objStorage))
+
+        modalOverlay.classList.remove("open")
+
+        addTaskList()
+
+        showToast("List Deleted & LocalStorage Updated.!", "success")
+
+        selectedIndex = null
+    }
+})
+
 
 // TOAST NOTIFICATION 
 function showToast(message, type) {
@@ -170,4 +204,5 @@ taskInputid.addEventListener("keyup", (e) => {
         insertElement.innerHTML = `<button class="error-btn" id="offline">OFFLINE...</button>`
     }
 })
+
 addTaskList()

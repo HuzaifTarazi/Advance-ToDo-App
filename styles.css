@@ -705,6 +705,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #modal-overlay.open {
   display: flex;
+  
 }
 
 #modal-box {
