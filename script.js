@@ -13,8 +13,8 @@ const taskList = document.getElementById("task-list")
 const toast = document.getElementById("toast")
 const toastMsg = document.getElementById("toast-msg")
 const selectPriority = document.getElementById("priority-select")
-let objStorage = []
-
+let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
+console.log(objStorage)
 // DATA IN OBJECTS
 class TaskFlow {
     constructor(title, description, priority, category, dateDue) {
@@ -73,14 +73,15 @@ addTask.onclick = () => {
     // taskDescid.value = ''
     // taskCategoryid.value = ''
     // taskDueDateid.value = ''
-
-    console.log(objStorage)
+    addTaskList()
 }
 
 
 function addTaskList() {
     let getElement = localStorage.getItem("User-Data")
     getElement = JSON.parse(getElement)
+    const currentDate = new Date().getFullYear()
+    console.log(currentDate)
     taskList.innerHTML = ''
 
     getElement.forEach((element, idx) => {
@@ -118,7 +119,6 @@ function addTaskList() {
                 </div>
             </li>`
     })
-
 
     const taskCheck = document.querySelector(".task-check")
     taskCheck.addEventListener("click", () => {
@@ -158,6 +158,7 @@ function showToast(message, type) {
     setTimeout(() => {
         toast.classList.remove("show");
     }, 2500);
+
 }
 
 // ONLINE - OFFLINE LIVE STATUS 
@@ -168,6 +169,4 @@ taskInputid.addEventListener("keyup", (e) => {
         insertElement.innerHTML = `<button class="error-btn" id="offline">OFFLINE...</button>`
     }
 })
-
-
 addTaskList()
