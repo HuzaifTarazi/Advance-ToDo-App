@@ -126,18 +126,14 @@ function addTaskList() {
 // Check Box Element
 taskList.addEventListener("click", (e) => {
     if (!e.target.classList.contains('checked')) {
-
         e.target.classList.add("checked")
-
     } else {
         e.target.classList.remove("checked")
     }
 
     if (e.target.closest('.del-btn')) {
-        let listItems = e.target.closest('li')
-        console.log(listItems)
+        const listItems = e.target.closest('li')
         selectedIndex = listItems.dataset.index
-        console.log(selectedIndex)
         modalOverlay.classList.add('open')
     }
 
@@ -153,16 +149,12 @@ modalActions.addEventListener('click', (e) => {
     }
 
     if (e.target.id === "modal-confirm") {
+
         objStorage.splice(selectedIndex, 1)
-
         localStorage.setItem("User-Data", JSON.stringify(objStorage))
-
         modalOverlay.classList.remove("open")
-
         addTaskList()
-
         showToast("List Deleted & LocalStorage Updated.!", "success")
-
         selectedIndex = null
     }
 })
