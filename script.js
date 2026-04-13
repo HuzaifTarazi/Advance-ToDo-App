@@ -18,13 +18,19 @@ const currentYear = new Date().getFullYear()
 const currentMonth = new Date().toLocaleString('default', { month: 'short' })
 const modalOverlay = document.getElementById("modal-overlay")
 const modalActions = document.getElementById("modal-actions")
+const filterBar = document.getElementById("filter-bar")
+const emptyState = document.getElementById("empty-state")
 let selectedIndex = null
 let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
 
 
+// INITIAL EMPTY STATE
+emptyState.style.display = `block`
+
+
 // DATA IN OBJECTS
 class TaskFlow {
-    constructor(title, description, priority, category, dateDue) {
+    constructor({ title, description, priority, category, dateDue }) {
         this.title = title
         this.description = description
         this.priority = priority
@@ -41,10 +47,15 @@ class TaskFlow {
             console.log("error")
             return
         }
-
         this._title = titleValue
     }
+
+    isDue() {
+        return new Date(this.dateDue) < new Date() ? "Time Passed" : "still got time"
+    }
+
 }
+
 
 // PROGRAM RUN ON CLICK
 addTask.onclick = () => {
@@ -69,24 +80,36 @@ addTask.onclick = () => {
     }
 
     // CLASS OBJECT CONVERSION
-    const taskFlowData = new TaskFlow(taskInput, taskDesc, taskPriority, taskCategory, taskDueDate)
-
+    const taskFlowData = new TaskFlow({ title: taskInput, description: taskDesc, priority: taskPriority, category: taskCategory, dateDue: taskDueDate })
+    const newdata = taskFlowData.isDue()
     // LOCAL-STORAGE
     objStorage = [...objStorage, taskFlowData]
+
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
     // taskInputid.value = ''
     // taskDescid.value = ''
     // taskCategoryid.value = ''
     // taskDueDateid.value = ''
+    console.log(newdata)
     addTaskList()
 }
 
 
 function addTaskList() {
+
     let getElement = localStorage.getItem("User-Data")
     getElement = JSON.parse(getElement)
+    if (getElement === null) {
+        taskList.innerHTML = ``
+        emptyState.style.display = `block`
+        return
+    } else if (getElement.length === 0) {
+        taskList.innerHTML = ``
+        emptyState.style.display = `block `
+        return
+    }
+    emptyState.style.display = `none`
     taskList.innerHTML = ''
-
     getElement.forEach((element, idx) => {
         taskList.innerHTML += ` <li data-index=${idx} class="task-card" data-priority="${element.priority}" >
                 <span class="task-check" ></span>
@@ -95,7 +118,7 @@ function addTaskList() {
                     <p class="task-desc-text">${element.description}</p>
                     <div class="task-meta">
                         <span class="priority-badge ${element.priority}"  >${element.priority}</span>
-                        <span class="task-due">📅 ${element.dateDue}</span>
+                        <span class="task-due ">📅 ${element.dateDue}</span>
                         <span class="task-cat">${element.category}</span>
                         <span class="task-created">${`${currentDate}-${currentMonth}-${currentYear}`}</span>
                     </div>
@@ -121,6 +144,7 @@ function addTaskList() {
                 </div>
             </li>`
     })
+
 }
 
 // Check Box Element
@@ -144,7 +168,6 @@ modalActions.addEventListener('click', (e) => {
     if (e.target.id === "modal-cancel") {
         modalOverlay.classList.remove("open")
         selectedIndex = null
-        console.log(selectedIndex)
         return
     }
 
@@ -158,6 +181,18 @@ modalActions.addEventListener('click', (e) => {
         selectedIndex = null
     }
 })
+
+filterBar.addEventListener('click', (e) => {
+    const { id } = e.target
+
+    switch (id) {
+        case "clear-done-btn":
+            localStorage.removeItem("User-Data")
+            addTaskList()
+            break
+    }
+})
+
 
 
 // TOAST NOTIFICATION 
@@ -193,8 +228,6 @@ taskInputid.addEventListener("keyup", (e) => {
     if (e.target.value !== "") {
         insertElement.innerHTML = `<button class="error-btn" id="online">ONLINE...</button>`
     } else {
-        insertElement.innerHTML = `<button class="error-btn" id="offline">OFFLINE...</button>`
+        insertElement.innerHTML = `<button class="error-btn" id="offline">AWAITING INPUT...</button>`
     }
 })
-
-addTaskList()
