@@ -20,8 +20,9 @@ const modalOverlay = document.getElementById("modal-overlay")
 const modalActions = document.getElementById("modal-actions")
 const filterBar = document.getElementById("filter-bar")
 const emptyState = document.getElementById("empty-state")
-let selectedIndex = null
 let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
+let selectedIndex = null
+
 
 
 // INITIAL EMPTY STATE
@@ -60,6 +61,8 @@ class TaskFlow {
 // PROGRAM RUN ON CLICK
 addTask.onclick = () => {
 
+    objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
+
     const taskInput = taskInputid.value
     const taskDesc = taskDescid.value
     const taskPriority = taskPriorityid.value
@@ -84,16 +87,17 @@ addTask.onclick = () => {
     const newdata = taskFlowData.isDue()
     // LOCAL-STORAGE
     objStorage = [...objStorage, taskFlowData]
-
+    console.log(objStorage)
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
+    
     // taskInputid.value = ''
     // taskDescid.value = ''
     // taskCategoryid.value = ''
     // taskDueDateid.value = ''
-    console.log(newdata)
+
+
     addTaskList()
 }
-
 
 function addTaskList() {
 
@@ -103,12 +107,14 @@ function addTaskList() {
         taskList.innerHTML = ``
         emptyState.style.display = `block`
         return
+
     } else if (getElement.length === 0) {
         taskList.innerHTML = ``
         emptyState.style.display = `block `
         return
     }
     emptyState.style.display = `none`
+
     taskList.innerHTML = ''
     getElement.forEach((element, idx) => {
         taskList.innerHTML += ` <li data-index=${idx} class="task-card" data-priority="${element.priority}" >
@@ -160,7 +166,6 @@ taskList.addEventListener("click", (e) => {
         selectedIndex = listItems.dataset.index
         modalOverlay.classList.add('open')
     }
-
 })
 
 modalActions.addEventListener('click', (e) => {
@@ -172,28 +177,25 @@ modalActions.addEventListener('click', (e) => {
     }
 
     if (e.target.id === "modal-confirm") {
-
         objStorage.splice(selectedIndex, 1)
         localStorage.setItem("User-Data", JSON.stringify(objStorage))
         modalOverlay.classList.remove("open")
+        selectedIndex = null
         addTaskList()
         showToast("List Deleted & LocalStorage Updated.!", "success")
-        selectedIndex = null
     }
 })
 
 filterBar.addEventListener('click', (e) => {
     const { id } = e.target
-
     switch (id) {
         case "clear-done-btn":
-            localStorage.removeItem("User-Data")
+            localStorage.clear("User-Data")
+            showToast('List Deleted & LocalStorage Updated.!', 'success')
             addTaskList()
             break
     }
 })
-
-
 
 // TOAST NOTIFICATION 
 function showToast(message, type) {
@@ -231,3 +233,5 @@ taskInputid.addEventListener("keyup", (e) => {
         insertElement.innerHTML = `<button class="error-btn" id="offline">AWAITING INPUT...</button>`
     }
 })
+
+addTaskList()
