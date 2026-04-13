@@ -37,6 +37,9 @@ class TaskFlow {
         this.priority = priority
         this.category = category
         this.dateDue = dateDue
+        this.dataStatus = false
+        this.datePassed = new Date(this.dateDue) < new Date() ? "Passed" : "Not Passed"
+
     }
 
     get title() {
@@ -50,11 +53,6 @@ class TaskFlow {
         }
         this._title = titleValue
     }
-
-    isDue() {
-        return new Date(this.dateDue) < new Date() ? "Time Passed" : "still got time"
-    }
-
 }
 
 
@@ -84,17 +82,16 @@ addTask.onclick = () => {
 
     // CLASS OBJECT CONVERSION
     const taskFlowData = new TaskFlow({ title: taskInput, description: taskDesc, priority: taskPriority, category: taskCategory, dateDue: taskDueDate })
-    const newdata = taskFlowData.isDue()
+
     // LOCAL-STORAGE
     objStorage = [...objStorage, taskFlowData]
     console.log(objStorage)
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
-    
+
     // taskInputid.value = ''
-    // taskDescid.value = ''
+    // taskDescid.value = ''2
     // taskCategoryid.value = ''
     // taskDueDateid.value = ''
-
 
     addTaskList()
 }
@@ -103,6 +100,7 @@ function addTaskList() {
 
     let getElement = localStorage.getItem("User-Data")
     getElement = JSON.parse(getElement)
+
     if (getElement === null) {
         taskList.innerHTML = ``
         emptyState.style.display = `block`
@@ -157,8 +155,19 @@ function addTaskList() {
 taskList.addEventListener("click", (e) => {
     if (!e.target.classList.contains('checked')) {
         e.target.classList.add("checked")
+        const selectParent = e.target.closest('li')
+        selectParent.classList.add('done')
+        const indexValue = selectParent.dataset.index
+        objStorage[indexValue] = { ...objStorage[indexValue], dataStatus: true }
+        console.log(objStorage)
+
     } else {
         e.target.classList.remove("checked")
+        const selectParent = e.target.closest('li')
+        selectParent.classList.remove('done')
+        const indexValue = selectParent.dataset.index
+        objStorage[indexValue] = { ...objStorage[indexValue], dataStatus: false }
+        console.log(objStorage)
     }
 
     if (e.target.closest('.del-btn')) {

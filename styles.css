@@ -536,6 +536,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .task-check.checked::after {
+  text-decoration: line-through;
   content: "";
   width: 5px;
   height: 9px;
