@@ -116,12 +116,12 @@ function addTaskList() {
     taskList.innerHTML = ''
     getElement.forEach((element, idx) => {
         taskList.innerHTML += ` <li data-index=${idx} class="task-card" data-priority="${element.priority}" >
-                <span class="task-check" ></span>
+                <span  class="task-check" ></span>
                 <div class="task-body">
                     <p class="task-title">${element._title}</p>
                     <p class="task-desc-text">${element.description}</p>
                     <div class="task-meta">
-                        <span class="priority-badge ${element.priority}"  >${element.priority}</span>
+                        <span class="priority-badge ${element.priority}">${element.priority}</span>
                         <span class="task-due ">📅 ${element.dateDue}</span>
                         <span class="task-cat">${element.category}</span>
                         <span class="task-created">${`${currentDate}-${currentMonth}-${currentYear}`}</span>
@@ -153,21 +153,24 @@ function addTaskList() {
 
 // Check Box Element
 taskList.addEventListener("click", (e) => {
-    if (!e.target.classList.contains('checked')) {
+    if (e.target.classList.contains('task-check') && (!e.target.classList.contains('checked'))) {
         e.target.classList.add("checked")
         const selectParent = e.target.closest('li')
         selectParent.classList.add('done')
         const indexValue = selectParent.dataset.index
         objStorage[indexValue] = { ...objStorage[indexValue], dataStatus: true }
         console.log(objStorage)
+        localStorage.setItem("User-Data", JSON.stringify(objStorage))
 
-    } else {
+
+    } else if (e.target.classList.contains('task-check') && (e.target.classList.contains('checked'))) {
         e.target.classList.remove("checked")
         const selectParent = e.target.closest('li')
         selectParent.classList.remove('done')
         const indexValue = selectParent.dataset.index
         objStorage[indexValue] = { ...objStorage[indexValue], dataStatus: false }
         console.log(objStorage)
+        localStorage.setItem("User-Data", JSON.stringify(objStorage))
     }
 
     if (e.target.closest('.del-btn')) {
