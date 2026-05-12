@@ -88,10 +88,10 @@ addTask.onclick = () => {
     console.log(objStorage)
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
 
-    // taskInputid.value = ''
-    // taskDescid.value = ''2
-    // taskCategoryid.value = ''
-    // taskDueDateid.value = ''
+    taskInputid.value = ''
+    taskDescid.value = ''
+    taskCategoryid.value = ''
+    taskDueDateid.value = ''
 
     addTaskList()
 }
