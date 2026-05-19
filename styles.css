@@ -317,7 +317,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #form-btns {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: space-between;
 }
 
@@ -325,7 +325,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-family: "Clash Display", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 15px 20px;
+  padding: 10px 20px;
   border-radius: var(--radius-sm);
   border: none;
   cursor: pointer;

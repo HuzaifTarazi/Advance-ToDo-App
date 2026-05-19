@@ -20,6 +20,9 @@ const modalOverlay = document.getElementById("modal-overlay")
 const modalActions = document.getElementById("modal-actions")
 const filterBar = document.getElementById("filter-bar")
 const emptyState = document.getElementById("empty-state")
+const formPanel = document.getElementById("form-panel")
+const cancelBtn = document.getElementById("cancel-btn")
+
 let objStorage = JSON.parse(localStorage.getItem("User-Data")) || []
 let selectedIndex = null
 
@@ -83,9 +86,17 @@ addTask.onclick = () => {
     // CLASS OBJECT CONVERSION
     const taskFlowData = new TaskFlow({ title: taskInput, description: taskDesc, priority: taskPriority, category: taskCategory, dateDue: taskDueDate })
 
+    if (formPanel.classList.contains('edit-mode')) {
+        objStorage[selectedIndex] = { ...objStorage[selectedIndex], _title: taskFlowData.title, description: taskFlowData.description, priority: taskFlowData.priority, category: taskFlowData.category, dateDue: taskFlowData.dateDue }
+        formPanel.classList.remove('edit-mode')
+        addTask.textContent = '➕ Add Task'
+        cancelBtn.style.display = "none"
+        selectedIndex = null
+    } else {
+        objStorage = [...objStorage, taskFlowData]
+    }
+
     // LOCAL-STORAGE
-    objStorage = [...objStorage, taskFlowData]
-    console.log(objStorage)
     localStorage.setItem("User-Data", JSON.stringify(objStorage))
 
     taskInputid.value = ''
@@ -128,7 +139,7 @@ function addTaskList() {
                     </div>
                 </div>
                 <div class="task-actions">
-                    <button class="icon-btn edit-btn " >
+                    <button class="icon-btn edit-btn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -177,6 +188,20 @@ taskList.addEventListener("click", (e) => {
         const listItems = e.target.closest('li')
         selectedIndex = listItems.dataset.index
         modalOverlay.classList.add('open')
+    }
+
+    if (e.target.closest('.edit-btn')) {
+        formPanel.classList.add('edit-mode')
+        cancelBtn.style.display = "block"
+        addTask.textContent = '✔ Update Task'
+        const listItem = e.target.closest('li')
+        selectedIndex = listItem.dataset.index
+
+        taskInputid.value = objStorage[selectedIndex]._title
+        taskDescid.value = objStorage[selectedIndex].description
+        taskPriorityid.value = objStorage[selectedIndex].priority
+        taskCategoryid.value = objStorage[selectedIndex].category
+        taskDueDateid.value = objStorage[selectedIndex].dateDue
     }
 })
 
